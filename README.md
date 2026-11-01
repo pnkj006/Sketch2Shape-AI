@@ -1,116 +1,192 @@
-
 # Sketch2Shape AI
+### From 2D Sketches to 3D Geometry
 
-Transform 2D sketches into visually detailed 3D models using Generative AI.
+**Turn your sketches into textured 3D models using Generative AI.**
 
-## Overview
+Sketch2Shape AI is a Generative AI-powered application that transforms hand-drawn sketches or uploaded images into 3D models. It combines sketch-conditioned image generation, multi-view synthesis, and 3D reconstruction to create downloadable 3D assets.
 
-Sketch2Shape AI is a sketch-to-3D generation system that converts hand-drawn sketches or uploaded images into 3D models.
+**Hackathon:** TechZephyr 4.0 — IIT Bhubaneswar  
+**Team:** Team Sky  
+**Team Members:** Amisha Tripathy, Pankaj Maity, Sanjib Kumar Mandal
 
-It combines sketch-guided image generation, multi-view synthesis and 3D reconstruction.
+**GitHub:** https://github.com/pnkj006/Sketch2Shape-AI
+
+---
 
 ## Features
 
-- In-app sketch drawing.
-- Sketch image upload.
-- Optional text prompts.
-- Sketch-guided image generation.
-- Multi-view generation.
-- 3D mesh reconstruction.
-- Mesh validation.
-- GLB and OBJ export.
-- Interactive 3D preview.
+- Interactive sketch canvas with brush, eraser, and reset controls.
+- Upload an existing sketch or image.
+- Optional text prompt for additional generation guidance.
+- Sketch-guided image generation using ControlNet.
+- Multi-view image synthesis using Zero123++.
+- 3D reconstruction using InstantMesh.
+- Mesh validation and cleanup.
+- Interactive 3D model preview.
+- Export reconstructed models in **GLB and OBJ formats**.
+
+## System Architecture
+
+```text
+        User Sketch / Uploaded Image
+                    |
+                    v
+             Preprocessing
+                    |
+                    v
+       Stable Diffusion 1.5 + ControlNet
+                    |
+                    v
+          Generated Object Image
+                    |
+                    v
+               Zero123++
+                    |
+                    v
+          Multiple Object Views
+                    |
+                    v
+               InstantMesh
+                    |
+                    v
+          3D Mesh Reconstruction
+                    |
+                    v
+          Mesh Validation / Cleanup
+                    |
+                    v
+             GLB / OBJ Export
+```
+
+## AI Models Used
+
+| Model | Purpose |
+|---|---|
+| Stable Diffusion 1.5 | Image generation |
+| ControlNet Scribble | Sketch-guided generation |
+| Zero123++ | Multi-view synthesis |
+| InstantMesh | 3D reconstruction |
+
+The project integrates pretrained models rather than training a new foundation model from scratch.
 
 ## Technology Stack
 
-- Python
-- PyTorch
-- Stable Diffusion 1.5
-- ControlNet
-- Zero123++
-- InstantMesh
-- OpenCV
-- Trimesh
-- FastAPI
-- Gradio
+- **Language:** Python
+- **Deep Learning:** PyTorch
+- **Image Processing:** OpenCV, Pillow
+- **Generative AI:** Diffusers, ControlNet
+- **3D Processing:** InstantMesh, Trimesh
+- **Backend:** FastAPI
+- **Interface:** Gradio
+- **Environment:** Google Colab, NVIDIA T4 GPU
 
 ## Project Structure
 
-Refer to the project directory for the complete source organization.
+```text
+Sketch2Shape-AI/
+├── backend/
+├── ml/
+├── services/
+├── frontend/
+├── configs/
+├── notebooks/
+├── examples/
+├── outputs/
+├── tests/
+├── docs/
+├── requirements.txt
+└── README.md
+```
 
-## Installation
+## Processing Workflow
 
-Clone the repository:
+1. **Input:** Draw a sketch or upload an image.
+2. **Preprocessing:** Prepare the input for model inference.
+3. **Image Generation:** Generate a detailed image using Stable Diffusion and ControlNet.
+4. **Background Processing:** Isolate the object where required.
+5. **Multi-view Synthesis:** Generate additional viewpoints using Zero123++.
+6. **3D Reconstruction:** Reconstruct geometry using InstantMesh.
+7. **Mesh Validation:** Inspect and clean the generated mesh.
+8. **Export:** Preview and download the model in GLB or OBJ format.
+
+## Demonstrated Results
+
+The following results were obtained during project testing:
+
+| Metric | Generated Model |
+|---|---:|
+| GLB file size | 321.80 KB |
+| OBJ file size | 822.85 KB |
+| Vertices | 8,216 |
+| Faces | 16,424 |
+| Watertight | Yes |
+
+A separate mesh-validation test also produced a watertight mesh with 11,808 vertices and 23,612 faces.
+
+These are observed test results, not guaranteed results for every input sketch.
+
+## Setup and Execution
+
+### Recommended Environment
+
+- Google Colab
+- NVIDIA T4 GPU or compatible CUDA GPU
+- Python environment with compatible PyTorch, CUDA, and model dependencies
+
+### Clone the repository
 
 ```bash
 git clone https://github.com/pnkj006/Sketch2Shape-AI.git
 cd Sketch2Shape-AI
 ```
 
-Install dependencies:
+### Model Setup
 
-```bash
-pip install -r requirements.txt
-```
+The pretrained model weights are downloaded separately and are not included in the GitHub repository.
 
-Install compatible PyTorch, CUDA and nvdiffrast dependencies as described in the setup notebook.
+Use the project notebooks:
 
-## Model Setup
+- `notebooks/sketch2shape_setup.ipynb`
+- `notebooks/sketch2shape_deployment.ipynb`
+- `notebooks/model_testing.ipynb`
 
-Pretrained model weights are not included in this repository.
+Follow the notebook setup steps to configure model dependencies, CUDA, and InstantMesh.
 
-Download and configure the required models:
+**Note:** Model initialization and inference require substantial GPU resources. Dependency versions must remain compatible with the Colab PyTorch and CUDA environment.
 
-- Stable Diffusion 1.5 + ControlNet
-- Zero123++
-- InstantMesh
+## Hardware and Performance
 
-Refer to `docs/model_details.md` and
-`notebooks/sketch2shape_setup.ipynb`.
+The project was tested using an NVIDIA T4 GPU in Google Colab. InstantMesh was configured with `grid_res=64` to manage GPU memory.
 
-## Running the Project
-
-Recommended environment: Google Colab with an NVIDIA T4 GPU.
-
-Open:
-
-`notebooks/sketch2shape_deployment.ipynb`
-
-Follow the notebook instructions to initialize the models and launch the application.
-
-## Output
-
-Generated models are available in:
-
-`outputs/`
-
-Supported formats:
-
-- GLB
-- OBJ
-
-## Examples
-
-Sample input sketches are available in:
-
-`examples/input_sketches/`
-
-A generated sample model is available in:
-
-`outputs/`
-
-## Documentation
-
-- `docs/architecture.md`
-- `docs/model_details.md`
-- `docs/limitations.md`
+Generation time and peak GPU memory have not been benchmarked consistently, so no fixed performance figures are claimed.
 
 ## Limitations
 
-Refer to `docs/limitations.md`.
+- Output quality depends on sketch clarity and structure.
+- Unseen surfaces are inferred by generative models.
+- Complex shapes and fine geometric details may not reconstruct perfectly.
+- Multi-view inconsistencies can affect the final geometry.
+- GPU memory and model initialization requirements can affect execution.
+- Generated meshes are intended for visual and creative use, not precision engineering or guaranteed 3D printing.
 
-## Hardware
+## Future Improvements
 
-Recommended: NVIDIA T4 GPU or equivalent CUDA-compatible GPU.
+- Improve multi-view consistency.
+- Enhance mesh refinement and topology.
+- Optimize inference speed and GPU memory usage.
+- Test across more object categories.
+- Improve reconstruction quality for complex sketches.
 
+## Acknowledgements
 
+This project builds upon pretrained models and open-source research:
+
+- Stable Diffusion and ControlNet
+- Zero123++
+- InstantMesh
+
+All underlying pretrained models remain the work of their respective creators.
+
+---
+
+**Sketch2Shape AI — Turning simple sketches into 3D possibilities.**
