@@ -1,0 +1,33 @@
+@'
+# Python
+__pycache__/
+*.py[cod]
+venv/
+venv_new/
+.env
+.env.*
+!.env.example
+
+# Model weights
+*.ckpt
+*.safetensors
+*.pth
+*.pt
+*.bin
+*.onnx
+
+# Temporary files
+*.log
+*.tmp
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+
+# Outputs: keep demo GLB only
+outputs/*
+!outputs/generated_model.glb
+!outputs/.gitkeep
+
+# Excluded archive
+sketch2shape_code.zip
+'@ | Set-Content .gitignore

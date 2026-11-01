@@ -1,0 +1,57 @@
+
+# ==========================================
+# Sketch2Shape AI - Dependencies
+# ==========================================
+
+# Core ML (PyTorch installed separately for CUDA compatibility)
+# torch
+# torchvision
+# torchaudio
+
+# Hugging Face / Generative AI
+transformers==5.21.0
+diffusers==0.42.1
+accelerate
+safetensors
+huggingface-hub
+timm
+einops
+omegaconf
+open-clip-torch
+
+# Image processing
+numpy
+Pillow
+opencv-python-headless
+scipy
+scikit-image
+imageio
+imageio-ffmpeg
+rembg
+onnxruntime
+
+# 3D reconstruction and mesh processing
+trimesh==5.2.0
+PyMCubes
+xatlas
+pymeshlab
+pygltflib
+moderngl
+plyfile
+
+# API backend
+fastapi==0.141.1
+uvicorn[standard]
+python-multipart
+requests
+pydantic
+
+# Frontend
+gradio==6.30.0
+
+# Utilities
+tqdm
+matplotlib
+ninja
+setuptools
+wheel
